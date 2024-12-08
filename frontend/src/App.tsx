@@ -1,12 +1,12 @@
-import './App.css';
+import Chat from './Containers/Chat/Chat.tsx';
 
 const App = () => {
 
   return (
     <>
-     I'm starting my home work #76! ^_^
+      <Chat/>
     </>
-  )
+  );
 };
 
 export default App;
