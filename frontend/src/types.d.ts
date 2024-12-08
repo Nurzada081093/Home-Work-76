@@ -9,8 +9,3 @@ export interface INewMessage {
   message: string;
   author: string;
 }
-
-export interface DataTime {
-  data: string;
-  time: string;
-}

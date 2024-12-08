@@ -3,37 +3,15 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
-import { DataTime, IMessage } from '../../../types';
+import { IMessage } from '../../../types';
 import React from 'react';
+import dayjs from 'dayjs';
 
 interface IMessageProps {
   message: IMessage;
 }
 
 const Message:React.FC<IMessageProps> = ({message}) => {
-  const dateFormat = (date: string) => {
-    const d: Date = new Date(date);
-
-    const addZero = (number: number): string => {
-      return number < 10 ? "0" + number : "" + number;
-    };
-
-    const data: string = [
-      addZero(d.getDate()),
-      addZero(d.getMonth() + 1),
-      d.getFullYear(),
-    ].join(".");
-
-    const time: string = [
-      addZero(d.getHours()),
-      addZero(d.getMinutes()),
-      addZero(d.getSeconds()),
-    ].join(":");
-
-    return { data, time };
-  };
-
-  const dayTime: DataTime = dateFormat(message.datetime);
 
   return (
     <Card
@@ -50,7 +28,7 @@ const Message:React.FC<IMessageProps> = ({message}) => {
             display: "flex",
             justifyContent: "space-between",
             backgroundColor: "rgba(197,202,233,0.84)",
-            p: "10px 20px",
+            p: "15px 20px 10px 20px",
           }}
         >
           <Typography
@@ -59,7 +37,7 @@ const Message:React.FC<IMessageProps> = ({message}) => {
             component="div"
             sx={{ fontSize: 18 }}
           >
-            {dayTime.data}
+            {dayjs(message.datetime).format('YYYY.MM.DD')}
           </Typography>
           <Typography
             gutterBottom
@@ -67,7 +45,7 @@ const Message:React.FC<IMessageProps> = ({message}) => {
             component="div"
             sx={{ fontSize: 18 }}
           >
-            {dayTime.time}
+            {dayjs(message.datetime).format('HH:mm:ss')}
           </Typography>
         </CardActions>
         <CardContent>

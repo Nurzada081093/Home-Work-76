@@ -7,18 +7,17 @@ import * as React from 'react';
 import { useState } from 'react';
 import { INewMessage } from '../../types';
 import { toast } from 'react-toastify';
-
-interface IProps {
-  addNewMessage: (newMessage: INewMessage) => void;
-}
+import { useAppDispatch } from '../../app/hooks.ts';
+import { postMessage } from '../../store/Thunks/messagesThunks.ts';
 
 const initialMessage = {
   message: '',
   author: '',
 };
 
-const FormElement: React.FC<IProps> = ({ addNewMessage }) => {
+const FormElement = () => {
   const [newMessage, setNewMessage] = useState<INewMessage>(initialMessage);
+  const dispatch = useAppDispatch();
 
   const getNewMessage = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -40,10 +39,7 @@ const FormElement: React.FC<IProps> = ({ addNewMessage }) => {
     ) {
       toast.error('Fill in all the fields!');
     } else {
-      addNewMessage({
-        ...newMessage,
-      });
-
+      dispatch(postMessage(newMessage));
       setNewMessage(initialMessage);
     }
   };
