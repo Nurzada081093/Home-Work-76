@@ -1,8 +1,23 @@
 import Container from '@mui/material/Container';
 import { GlobalStyles } from '@mui/material';
 import FormElement from '../../Components/FormElement/FormElement.tsx';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { messagesFromSlice } from '../../store/Slices/messagesSlices.ts';
+import Messages from '../../Components/Messages/Messages.tsx';
+import { useEffect } from 'react';
+import { getMessages } from '../../store/Thunks/messagesThunks.ts';
+
 
 const Chat = () => {
+  const messages = useAppSelector(messagesFromSlice);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getMessages());
+  }, [dispatch]);
+
+  console.log(messages);
+
 
   const addNewMessage = () => {
     console.log('Создание нового сообщения');
@@ -20,9 +35,8 @@ const Chat = () => {
         }}
       />
       <Container maxWidth="sm" sx={{ mt: 2 }}>
-        <div>
-          <FormElement addNewMessage={addNewMessage} />
-        </div>
+        <FormElement addNewMessage={addNewMessage} />
+        <Messages messages={messages}/>
       </Container>
     </>
   );

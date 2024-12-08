@@ -10,7 +10,7 @@ const Messages:React.FC<IMessagesProps> = ({messages}) => {
   return (
     <>
       {messages.map((message) => (
-        <Message key={message._id} message={message} />
+        <Message key={message.id} message={message} />
       ))}
     </>
   );

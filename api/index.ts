@@ -2,10 +2,11 @@ import express from "express";
 import messagesRouter from "./routers/messages";
 import fs = require("fs");
 import fileMessage from "./fileMessage";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
-
+app.use(cors());
 app.use(express.json());
 app.use('/messages', messagesRouter);
 
