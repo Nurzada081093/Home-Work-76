@@ -2,14 +2,13 @@ import Container from '@mui/material/Container';
 import { GlobalStyles } from '@mui/material';
 import FormElement from '../../Components/FormElement/FormElement.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { lastMessagesFromSlice, messagesFromSlice } from '../../store/Slices/messagesSlices.ts';
+import { messagesFromSlice } from '../../store/Slices/messagesSlices.ts';
 import { useEffect, useState } from 'react';
 import { getLastMessages, getMessages } from '../../store/Thunks/messagesThunks.ts';
 import Messages from '../../Components/Messages/Messages.tsx';
 
 const Chat = () => {
   const messages = useAppSelector(messagesFromSlice);
-  const lastMessages = useAppSelector(lastMessagesFromSlice);
   const dispatch = useAppDispatch();
   const [lastDateTime, setLastDateTime] = useState<string>('');
 
@@ -34,16 +33,13 @@ const Chat = () => {
     }
   }, [lastDateTime, dispatch]);
 
-  useEffect(() => {
-    if (lastMessages.length > 0) {
-      const lastDate = lastMessages[lastMessages.length - 1].datetime;
-      setLastDateTime(lastDate);
-    }
-  }, [lastMessages]);
 
-  const reversedMessages = [...messages].reverse();
+  const reversedMessages = [...messages].sort(
+    (a, b) =>
+      new Date(a.datetime).getTime() - new Date(b.datetime).getTime(),
+  ).reverse();
 
-  console.log(lastDateTime);
+
   return (
     <>
       <GlobalStyles

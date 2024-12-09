@@ -23,13 +23,13 @@ messagesRouter.get("/", async (req, res) => {
             return messageDate.getTime() > date.getTime();
         });
 
-        const messagesAfterDate = lastMessagesDate.reverse().slice(0, 30);
-        res.send(messagesAfterDate);
+        res.send(lastMessagesDate);
         return;
+    } else {
+        const lastMessages = allMessages.reverse().slice(0, 30);
+        res.send(lastMessages);
     }
 
-    const lastMessages = allMessages.reverse().slice(0, 30);
-    res.send(lastMessages);
 });
 
 messagesRouter.post("/", async (req, res) => {

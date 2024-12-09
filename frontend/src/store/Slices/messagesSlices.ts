@@ -5,7 +5,6 @@ import { RootState } from '../../app/store.ts';
 
 interface IInitialState {
   messages: IMessage[];
-  lastMessages: IMessage[];
   loaders: {
     getLoader: boolean;
     postLoader: boolean;
@@ -15,7 +14,6 @@ interface IInitialState {
 
 const initialState: IInitialState = {
   messages: [],
-  lastMessages: [],
   loaders: {
     getLoader: false,
     postLoader: false,
@@ -24,7 +22,6 @@ const initialState: IInitialState = {
 };
 
 export const messagesFromSlice = (state: RootState) => state.messages.messages;
-export const lastMessagesFromSlice = (state: RootState) => state.messages.lastMessages;
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -62,11 +59,12 @@ const messagesSlice = createSlice({
       })
       .addCase(getLastMessages.fulfilled, (state, action: PayloadAction<IMessage[]>) => {
         state.error = false;
-        if (state.messages && action.payload) {
-          state.messages = [...state.messages, ...action.payload];
-        } else {
-          state.messages = action.payload;
-        }
+
+        const newMessages = action.payload.filter((newMessage) =>
+          !state.messages.some((oldMessage) => oldMessage.id === newMessage.id)
+        );
+
+        state.messages = [...state.messages, ...newMessages];
       })
       .addCase(getLastMessages.rejected, (state) => {
         state.error = true;

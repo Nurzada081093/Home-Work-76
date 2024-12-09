@@ -13,6 +13,21 @@ interface IMessageProps {
 
 const Message:React.FC<IMessageProps> = ({message}) => {
 
+  const formatDate = (dateString: string) => {
+    const today = dayjs();
+    const messageDate = dayjs(dateString);
+
+    if (messageDate.isSame(today, 'day')) {
+      return 'Сегодня';
+    } else if (messageDate.isSame(today.subtract(1, 'day'), 'day')) {
+      return 'Вчера';
+    } else if (messageDate.isSame(today, 'year')) {
+      return messageDate.format('DD MMMM');
+    } else {
+      return messageDate.format('DD MMMM YYYY');
+    }
+  };
+
   return (
     <Card
       sx={{
@@ -37,7 +52,7 @@ const Message:React.FC<IMessageProps> = ({message}) => {
             component="div"
             sx={{ fontSize: 18 }}
           >
-            {dayjs(message.datetime).format('YYYY.MM.DD')}
+            {formatDate(message.datetime)}
           </Typography>
           <Typography
             gutterBottom
