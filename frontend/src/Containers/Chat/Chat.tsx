@@ -2,13 +2,15 @@ import Container from '@mui/material/Container';
 import { GlobalStyles } from '@mui/material';
 import FormElement from '../../Components/FormElement/FormElement.tsx';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { messagesFromSlice } from '../../store/Slices/messagesSlices.ts';
+import { getLoaderFromSlice, messagesFromSlice } from '../../store/Slices/messagesSlices.ts';
 import { useEffect, useState } from 'react';
 import { getLastMessages, getMessages } from '../../store/Thunks/messagesThunks.ts';
 import Messages from '../../Components/Messages/Messages.tsx';
+import Loader from '../../Components/UI/Loader/Loader.tsx';
 
 const Chat = () => {
   const messages = useAppSelector(messagesFromSlice);
+  const loader = useAppSelector(getLoaderFromSlice);
   const dispatch = useAppDispatch();
   const [lastDateTime, setLastDateTime] = useState<string>('');
 
@@ -42,19 +44,23 @@ const Chat = () => {
 
   return (
     <>
-      <GlobalStyles
-        styles={{
-          body: {
-            background:
-              'url("https://bogatyr.club/uploads/posts/2023-03/thumbs/1679357524_bogatyr-club-p-oboi-na-rabochii-stol-temno-zelenie-foni-i-1.jpg") no-repeat center center fixed',
-            backgroundSize: "cover",
-          },
-        }}
-      />
-      <Container maxWidth="sm" sx={{ mt: 2 }}>
-        <FormElement/>
-        <Messages messages={reversedMessages}/>
-      </Container>
+      {loader ? <Loader/> :
+      <>
+        <GlobalStyles
+          styles={{
+            body: {
+              background:
+                'url("https://bogatyr.club/uploads/posts/2023-03/thumbs/1679357524_bogatyr-club-p-oboi-na-rabochii-stol-temno-zelenie-foni-i-1.jpg") no-repeat center center fixed',
+              backgroundSize: "cover",
+            },
+          }}
+        />
+        <Container maxWidth="sm" sx={{ mt: 2 }}>
+          <FormElement/>
+          <Messages messages={reversedMessages}/>
+        </Container>
+      </>
+      }
     </>
   );
 };

@@ -22,6 +22,8 @@ const initialState: IInitialState = {
 };
 
 export const messagesFromSlice = (state: RootState) => state.messages.messages;
+export const getLoaderFromSlice = (state: RootState) => state.messages.loaders.getLoader;
+export const postLoaderFromSlice = (state: RootState) => state.messages.loaders.postLoader;
 
 const messagesSlice = createSlice({
   name: 'messages',

@@ -7,8 +7,10 @@ import * as React from 'react';
 import { useState } from 'react';
 import { INewMessage } from '../../types';
 import { toast } from 'react-toastify';
-import { useAppDispatch } from '../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { postMessage } from '../../store/Thunks/messagesThunks.ts';
+import { postLoaderFromSlice } from '../../store/Slices/messagesSlices.ts';
+import { CircularProgress } from '@mui/material';
 
 const initialMessage = {
   message: '',
@@ -17,6 +19,7 @@ const initialMessage = {
 
 const FormElement = () => {
   const [newMessage, setNewMessage] = useState<INewMessage>(initialMessage);
+  const loaderPost = useAppSelector(postLoaderFromSlice);
   const dispatch = useAppDispatch();
 
   const getNewMessage = (
@@ -70,7 +73,10 @@ const FormElement = () => {
             placeholder="Enter your message..."
             minRows={3}
           />
-          <Button type="submit">Send</Button>
+          <Button type="submit" disabled={loaderPost}>
+            Send
+            {loaderPost ? <CircularProgress size="30px" sx={{marginLeft: '20px'}}/> : null}
+          </Button>
         </Stack>
       </form>
     </Box>
